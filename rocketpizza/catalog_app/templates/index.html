@@ -1,0 +1,220 @@
+<!doctype html>
+{% load static %}
+<html lang="ru' %}">
+  <head>
+    <meta charset="UTF-8' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+    <link rel="mask-icon" href="{% static 'favicon/safari-pinned-tab.svg" color="#5bbad5' %}">
+    <meta name="msapplication-TileColor" content="#000000' %}">
+    <meta name="theme-color" content="#000000' %}">
+    
+    <link rel="shortcut icon" href="{% static 'favicon/favicon.ico' %}">
+    
+    <title>{{ site_data.site_name_browser }}</title>
+  
+    <link rel="stylesheet" id="swiper-css" href="{% static 'styles/swiper-bundle.min.css' %}?ver=5.7.4" type="text/css" media="all">
+    <link rel="stylesheet" id="main-css" href="{% static 'styles/style.css' %}?ver=1" type="text/css" media="all">
+    <script type="text/javascript" src="{% static 'scripts/jquery-3.4.1.min.js' %}?ver=5.7.4" id="jquery-js"></script>
+    <script type="text/javascript" src="{% static 'scripts/swiper-bundle.min.js' %}?ver=5.7.4" id="swiper-js"></script>
+    <script type="text/javascript" src="{% static 'scripts/ScrollMagic.min.js' %}?ver=5.7.4" id="scrollMagic-js"></script>
+    <script type="text/javascript" src="{% static 'scripts/debug.addIndicators.min.js' %}?ver=5.7.4" id="crollmagic-debug-js"></script>
+    <script type="text/javascript" src="{% static 'scripts/script.js' %}?ver=1" id="main-js"></script>
+    <link rel="canonical" href="https://pizza-rocket.ru/">
+    <link rel="shortlink" href="https://pizza-rocket.ru/">
+  </head>
+  <body>
+    <header>
+      <div class="fixed-container">
+        <div class="header">
+          <div class="header__logo" id="logo-top" style="background-image: url({% static 'images/logo.png' %});"> </div>
+          <div class="header__title">
+            Rocket<br>Pizza
+          </div>
+          <div class="header__text">
+            {{ site_data.main_title|linebreaksbr }}
+          </div>
+          <div class="header__time">
+            доставляем<br>c {{ site_data.work_start_time }} до {{ site_data.end_start_time }}
+          </div>
+          <a class="contacts__call contacts header__contacts" href="tel:{{ site_data.contact_phone_full }}">{{ site_data.contact_phone_viewed }}</a>
+        </div>
+      </div>
+    </header>
+    <div class="header__nav">
+      <div class="fixed-container">
+        {% if categories_group %}
+          <ul class="navigation">
+            {% for item in categories_group %}
+              {% if item.is_visible %}
+                <li>
+                  <a class="navigation__item" href="#{{ item.name }}">{{ item.name }}</a>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+        <a class="header__cart-button" href="/cart">
+          Корзина <span class="header__cart-counter js-cart-counter"> 0</span>
+        </a>
+      </div>
+    </div>
+    <div class="loader-container" style="display: none">
+      <img src="{% static 'images/logo-loader.png' %}" alt="" class="loader-image">
+    </div>
+    <main>
+
+      <nav>
+        <div class="fixed-container">
+          <div class="mobile-menu__navigation">
+            <div class="mobile-menu__close js-close-menu"></div>
+            <p class="mobile-menu__head">МЕНЮ</p>
+            {% if categories_group %}
+              <ul class="mobile-menu__navigation-list">
+                {% for item in categories_group %}
+                  {% if item.is_visible %}
+                    <li>
+                      <a class="mobile-menu__navigation-item" href="#{{ item.name }}">{{ item.name }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+                <li class="mobile-menu__links">
+                  <p>{{ site_data.self_address }}</p>
+                  <div class="mobile-menu__contacts">
+                    <a class="contacts__call" href="tel:{{ site_data.contact_phone_full }}">{{ site_data.contact_phone_viewed }}</a>
+                  </div>
+                </li>
+              </ul>
+            {% endif %}
+          </div>
+          <a id="arrow-button" href="#logo-top"></a>
+          <div class="mobile-heading">
+            <div class="mobile-menu__burger js-burger"></div>
+            <div class="mobile-heading__data">
+              <span>C {{ site_data.work_start_time }} до {{ site_data.end_start_time }}</span>
+              <a href="tel:{{ site_data.contact_phone_full }}" class="mobile-heading__phone">{{ site_data.contact_phone_viewed }}</a>
+            </div>
+            <a class="cart-button" href="/cart">
+              <div class="cart-counter">0</div>
+            </a>
+          </div>
+        </div>
+      </nav>
+
+
+      <section>
+        <div class="fixed-container">
+          {% if categories_group %}
+            {% for cat in categories_group %}
+              {% if cat.is_visible %}
+                <div class="category">
+                  <p class="yakor category__title" id="{{ cat.name }}">{{ cat.name }}</p>
+                  {% if cat.products %}
+                    <div class="category__menu">
+                      {% for prod in cat.products %}
+                        <div class="menu__item" data-id="{{ prod.id }}">
+                          <div class="menu__item-image">
+                            <img src="{{ prod.image }}" alt="" width="200" height="200">
+                          </div>
+                          <div class="menu__item-name">
+                            {{ prod.name }}
+                          </div>
+                          <div class="menu__item-price">
+                            {% if prod.price %}
+                              {{ prod.price }} руб.
+                            {% elif prod.start_price %}
+                              от {{ prod.start_price }} руб.
+                            {% endif %}
+                          </div>
+                          <div class="menu__item-description">
+                            {{ prod.description }}
+                          </div>
+                          <div class="checkbox-group">
+                            {% if prod.modificators %}
+                                <form class="menu__item-select menu__item-select custom-checkbox-group">
+                                  <input type="text" hidden name="diam-value" class="variants-value-hidden-js">
+                                  {% for mod in prod.modificators %}
+                                    {% if mod.price %}
+                                      <label class="menu__item-select-name menu__item-select-name--variants radio">
+                                        <input type="radio" name="variant" checked data-price="{{ mod.price }}" data-id="{{ mod.id }}"><span class="radio__text">{{ mod.name }}<br>{{ mod.price }} руб.</span>
+                                      </label>
+                                    {% else %}
+                                      <label class="menu__item-select-name menu__item-select-name--variants-without-price radio">
+                                        <input type="radio" name="variants-without-price" checked value="{{ mod.name }}">
+                                          <span class="radio__text">{{ mod.name }}</span>
+                                      </label>
+                                    {% endif %}
+                                  {% endfor %}
+                                </form>
+                            {% endif %}
+                            {#                      <?php $VariantsArray = explode(',', $diamVariants);#}
+                            {#                                if (count($VariantsArray) > 1) : ?>#}
+                            {#                      <form class="menu__item-select menu__item-select custom-checkbox-group">#}
+                            {#                        <input type="text" hidden name="diam-value" class="variants-value-hidden-js">#}
+                            {#                        <?php foreach ($VariantsArray as $variant):#}
+                            {#                                          if (array_search($variant, $VariantsArray) == 0) : ?>#}
+                            {#                        <label class="menu__item-select-name menu__item-select-name--variants radio active">#}
+                            {#                          <input type="radio" name="variant" checked value="<?php echo trim(explode('-',$variant)[1]); ?>"><span class="radio__text"><?php echo explode('(',trim(explode('-',$variant)[0]))[0]; ?><br><?php echo explode('(', trim(explode('-',$variant)[0]))[1]; ?></span></label>#}
+                            {#                        <?php else: ?>#}
+                            {#                        <label class="menu__item-select-name menu__item-select-name--variants radio">#}
+                            {#                          <input type="radio" name="variant" value="<?php echo trim(explode('-',$variant)[1]); ?>"><span class="radio__text"><?php echo explode('(',trim(explode('-',$variant)[0]))[0]; ?><br><?php echo explode('(', trim(explode('-',$variant)[0]))[1]; ?></span></label>#}
+                            {#                        <?php endif; ?>#}
+                            {#                        <?php endforeach; ?>#}
+                            {#                      </form>#}
+                            {#                      <?php endif; ?>#}
+                            {#                      <?php $variantsWithoutPriceArray = explode(',', $variantsWithoutPrice);#}
+                            {#                                if (count($variantsWithoutPriceArray) > 1) : ?>#}
+                            {#                      <form class="menu__item-select menu__item-select-additional custom-checkbox-group">#}
+                            {#                        <input type="text" hidden name="variants-without-price-value" class="variants-without-price-value-hidden-js">#}
+                            {#                        <?php foreach ($variantsWithoutPriceArray as $variant):#}
+                            {#                                          if (array_search($variant, $variantsWithoutPriceArray) == 0) : ?>#}
+                            {#                        <label class="menu__item-select-name menu__item-select-name--variants-without-price radio active">#}
+                            {#                          <input type="radio" name="variants-without-price" checked value="<?php echo $variant; ?>"><span class="radio__text"><?php echo $variant; ?></span></label>#}
+                            {#                        <?php else: ?>#}
+                            {#                        <label class="menu__item-select-name menu__item-select-name--variants-without-price radio">#}
+                            {#                          <input type="radio" name="variants-without-price" value="<?php echo $variant; ?>"><span class="radio__text"><?php echo $variant; ?></span></label>#}
+                            {#                        <?php endif; ?>#}
+                            {#                        <?php endforeach; ?>#}
+                            {#                      </form>#}
+                            {#                      <?php endif; ?>#}
+                          </div>
+                          <button class="menu__btn-add-to-cart" data-price="{{ item.price }}" data-id="{{ item.id }}">В корзину</button>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                </div>
+              {% endif %}
+              {% endfor %}
+          {% endif %}
+
+
+        </div>
+      </section>
+
+
+      <section class="footer">
+        <div class="contacts">
+          <a class="contacts__call" href="tel:{{ site_data.contact_phone_full }}">{{ site_data.contact_phone_viewed }}</a>
+        </div>
+        <p>Наш адрес: {{ site_data.self_address }}</p>
+        <!--                    <p>Скидка на самовывоз - 20%</p>-->
+        <p>{{ site_data.text_about_delivery }}</p>
+        <p><img src="https://pizza-rocket.ru/wp-content/themes/slon/image/logo-loader.png" alt=""></p>
+      </section>
+      <!--                <div class="alert-wt">-->
+      <!--                    <div class="alert-wt__backgound">-->
+      <!--                        <p class="alert-wt__text">Доставляем с 19:00 до 3:00. <br>Предлагаем сейчас неспеша ознакомиться с меню</p>-->
+      <!--                        <div class="alert-wt__confirm">Понятно</div>-->
+      <!--                    </div>-->
+      <!--                </div>-->
+
+    </main>
+  </body>
+</html>
