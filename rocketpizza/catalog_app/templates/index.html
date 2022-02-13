@@ -135,23 +135,30 @@
                           <div class="menu__item-description">
                             {{ prod.description }}
                           </div>
-                          <div class="checkbox-group">
                             {% if prod.modificators %}
-                                <form class="menu__item-select menu__item-select custom-checkbox-group">
-                                  <input type="text" hidden name="diam-value" class="variants-value-hidden-js">
-                                  {% for mod in prod.modificators %}
-                                    {% if mod.price %}
-                                      <label class="menu__item-select-name menu__item-select-name--variants radio">
-                                        <input type="radio" name="variant" checked data-price="{{ mod.price }}" data-id="{{ mod.id }}"><span class="radio__text">{{ mod.name }}<br>{{ mod.price }} руб.</span>
-                                      </label>
-                                    {% else %}
-                                      <label class="menu__item-select-name menu__item-select-name--variants-without-price radio">
-                                        <input type="radio" name="variants-without-price" checked value="{{ mod.name }}">
-                                          <span class="radio__text">{{ mod.name }}</span>
-                                      </label>
-                                    {% endif %}
-                                  {% endfor %}
-                                </form>
+                                <div class="checkbox-group">
+                                    <form class="menu__item-select menu__item-select custom-checkbox-group">
+                                      <input type="text" hidden name="diam-value" class="variants-value-hidden-js">
+                                      {% for mod in prod.modificators %}
+                                          <label class="menu__item-select-name menu__item-select-name--variants radio">
+                                            <input type="radio" name="variant" required checked data-price="{{ mod.price }}" data-id="{{ mod.id }}"><span class="radio__text">{{ mod.name }}<br></span>
+                                          </label>
+                                      {% endfor %}
+                                    </form>
+                                </div>
+                            {% endif %}
+                            {% if prod.modificators_without_price %}
+                                <div class="checkbox-group checkbox-group--without-price">
+                                    <form class="menu__item-select menu__item-select custom-checkbox-group">
+                                      <input type="text" hidden name="diam-value" class="variants-value-hidden-js">
+                                      {% for mod in prod.modificators_without_price %}
+                                          <label class="menu__item-select-name menu__item-select-name--variants-without-price radio">
+                                            <input type="radio" required name="variants-without-price" checked value="{{ mod.name }}" data-id="{{ mod.id }}">
+                                              <span class="radio__text">{{ mod.name }}</span>
+                                          </label>
+                                      {% endfor %}
+                                    </form>
+                                </div>
                             {% endif %}
                             {#                      <?php $VariantsArray = explode(',', $diamVariants);#}
                             {#                                if (count($VariantsArray) > 1) : ?>#}
@@ -183,7 +190,6 @@
                             {#                        <?php endforeach; ?>#}
                             {#                      </form>#}
                             {#                      <?php endif; ?>#}
-                          </div>
                           <button class="menu__btn-add-to-cart" data-price="{{ item.price }}" data-id="{{ item.id }}">В корзину</button>
                         </div>
                       {% endfor %}

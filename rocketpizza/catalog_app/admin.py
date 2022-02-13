@@ -24,6 +24,11 @@ class ProductModificatorAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
+@admin.register(ProductModificatorWithoutPrice)
+class ProductModificatorWithoutPriceAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
+
 @admin.register(SiteData)
 class SiteDataAdmin(admin.ModelAdmin):
     pass

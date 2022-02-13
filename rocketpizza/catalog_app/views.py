@@ -22,6 +22,7 @@ class MainPageView(View):
             is_visible: bool
             image: str
             modificators: list
+            modificators_without_price: list
         @dataclass
         class Category_obj:
             name: str
@@ -41,6 +42,7 @@ class MainPageView(View):
                 image=prod.image,
                 category=prod.category,
                 modificators=prod.modificator.all(),
+                modificators_without_price=prod.modificator_no_price.all(),
                 name=prod.name,
                 is_visible=prod.is_visible
             )

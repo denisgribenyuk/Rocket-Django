@@ -14,6 +14,17 @@ class ProductModificator(models.Model):
         verbose_name_plural = 'Модификаторы'
 
 
+class ProductModificatorWithoutPrice(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Имя модификатора')
+
+    def __str__(self):
+        return f'{self.name}'
+
+    class Meta:
+        verbose_name = 'Модификатор не влияющий на цену'
+        verbose_name_plural = 'Модификатор не влияющие на цену'
+
+
 class Category(models.Model):
     title = models.CharField(max_length=70, verbose_name='Имя категории товаров')
     is_visible = models.BooleanField(default=True, verbose_name='Видимость категории')
@@ -35,6 +46,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='static/prod_images', null=True, verbose_name='Изображение продукта')
     is_visible = models.BooleanField(default=True, null=True, verbose_name='Видимость продукта')
     modificator = models.ManyToManyField(ProductModificator, blank=True, null=True)
+    modificator_no_price = models.ManyToManyField(ProductModificatorWithoutPrice, blank=True, null=True)
 
     def __str__(self):
         return self.name
