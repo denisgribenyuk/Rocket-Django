@@ -24,8 +24,9 @@ $(document).ready(function() {
         product_data.prod_id = $(this).parents('.menu__item').attr('data-id')
 
         let order_item_is_ready = true
-        if ($(this).parents('.menu__item').children('.checkbox-group').length){
+        if ($(this).parents('.menu__item').children('.menu__item-footer').children('.checkbox-group').length){
             const mod_id = $(this).parents('.menu__item')
+            .children('.menu__item-footer')
             .children('.checkbox-group')
             .children('.menu__item-select')
             .children('.menu__item-select-name.active')
@@ -37,8 +38,9 @@ $(document).ready(function() {
                 order_item_is_ready = false
             }
         }
-        if ($(this).parents('.menu__item').children('.checkbox-group--without-price').length){
+        if ($(this).parents('.menu__item').children('.menu__item-footer').children('.checkbox-group--without-price').length){
             const mod_id_without_price = $(this).parents('.menu__item')
+            .children('.menu__item-footer')
             .children('.checkbox-group--without-price')
             .children('.menu__item-select')
             .children('.menu__item-select-name.active')
@@ -150,8 +152,8 @@ $(document).ready(function() {
         $(this).parent('.menu__item-select').children('.menu__item-select-name').removeClass('active')
         $(this).toggleClass('active')
         // $(this).parents('.menu__item-select').children('.variants-value-hidden-js').attr('data-val',$(this).children('.radio__text').text())
-        // const price = $(this).children('[name="variant"]').attr('data-price')
-        $(this).parents('.menu__item').children('.menu__item-price').text(price + ' руб.')
+        const price = $(this).children('[name="variant"]').attr('data-price')
+        $(this).parents('.menu__item').children('.menu__item-footer').children('.menu__item-price').text(price + ' руб.')
         // $(this).parents('.menu__item').children('.menu__btn-add-to-cart').attr('data-price', price.split(' ')[0])
     });
     $(document).on('click', '.menu__item-select-name--variants-without-price', function () {
