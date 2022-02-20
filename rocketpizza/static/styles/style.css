@@ -18,21 +18,26 @@
     font-family: 'Neuropol_Medium';
     src: url('fonts/Neuropol_Medium.ttf');
 }
+@font-face {
+    font-family: 'Xolonium-Regular';
+    src: url('./fonts/Xolonium-Regular.otf');
+}
 
 body,
 html {
-    font-family: CenturyGothic, sans-serif;
+    font-family: Xolonium-Regular, sans-serif;
     color: #dc7d43;
     padding: 0;
     margin: 0 auto;
     background-color: #252525;
     scroll-behavior: smooth;
-    min-width: 320px;
+    min-width: 360px;
 }
 
 .fixed-container {
     max-width: 1280px;
     margin: 0 auto;
+    padding: 0 15px;
 }
 
 ul {
@@ -102,7 +107,6 @@ ul {
     display: flex;
     height: 100px;
     align-items: center;
-    font-family: 'Neuropol_Medium';
 }
 
 .header__logo {
@@ -110,11 +114,11 @@ ul {
     width: 97px;
     height: 100px;
     background-size: cover;
+    flex-shrink: 0;
 }
 
 
 .header__text {
-    font-family: 'Neuropol_Medium';
     display: block;
     font-size: 25px;
     line-height: 1;
@@ -122,11 +126,11 @@ ul {
 }
 
 .header__title {
-    font-family: 'Neuropol_Medium';
     font-size: 28px;
     line-height: 1;
     text-transform: uppercase;
     margin-left: 25px;
+    flex-shrink: 0;
 }
 
 .header__time {
@@ -157,7 +161,6 @@ ul {
 }
 
 .header__cart-button {
-    font-family: 'Neuropol_Medium';
     background-color: #dc7d43;
     display: flex;
     padding: 13px 34px;
@@ -168,6 +171,7 @@ ul {
     text-decoration: none;
     border-radius: 32px;
     transition: background-color .2s, color .2s;
+    flex-shrink: 0;
 }
 
 .header__cart-button:hover {
@@ -183,11 +187,18 @@ ul {
     display: flex;
     align-items: center;
     flex-direction: row;
+    overflow-x: scroll;
+}
+
+.navigation::-webkit-scrollbar{
+    background: transparent;
+    color: transparent;
+    width: 0;
+    height: 0;
 }
 
 .navigation__item {
     display: inline-block;
-    font-family: CenturyGothicBold;
     color: #dc7d43;
     font-size: 24px;
     line-height: 1;
@@ -263,7 +274,6 @@ ul {
 }
 
 .menu___head {
-    font-family: 'Neuropol_Medium';
     font-size: 50px;
     line-height: 1.5;
     text-align: center;
@@ -394,7 +404,6 @@ ul {
 
 .category__title {
     text-align: left;
-    font-family: Neuropol_Medium;
     font-size: 45px;
     padding-top: 50px;
     padding-bottom: 20px;
@@ -413,7 +422,7 @@ ul {
     width: 270px;
     justify-content: space-between;
     margin-bottom: 60px;
-    margin-right: 66px;
+    margin-right: 50px;
     /*max-width: 300px;*/
     /*min-height: 500px;*/
     /*padding: 20px 20px 50px;*/
@@ -427,9 +436,6 @@ ul {
     /*box-shadow: 6px 9px 17px 1px rgba(34, 60, 80, 0.12);*/
 }
 
-.menu__item:nth-child(4n+4){
-    margin-right: 0;
-}
 
 .menu__item-footer {
     display: flex;
@@ -459,6 +465,7 @@ ul {
 /*}*/
 
 .menu__item-description {
+    font-family: 'CenturyGothic';
     margin-top: 25px;
 }
 
@@ -527,6 +534,7 @@ ul {
 }
 
 .custom-checkbox-group .radio__text {
+    font-family: 'CenturyGothic';
     font-size: 14px;
     padding: 0 4px;
 }
@@ -574,6 +582,90 @@ ul {
     box-shadow: 0 0 0 3px rgba(255,255,0,.7);
 }
 
+
+.menu__item--mobile {
+    display: none;
+    margin-bottom: 20px;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.menu__item-about--mobile {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-left: 25px;
+    width: 100%;
+}
+
+.menu__item-name--mobile {
+    font-family: CenturyGothicBold;
+    font-size: 20px;
+}
+
+.menu__btn-price--mobile {
+        border: none;
+    background-color: #dd5f08;
+    padding: 9px 18px;
+    border-radius: 25px;
+}
+/*todo отображение попапа в мобилке*/
+.menu__item-popup {
+    display: none;
+    position: fixed;
+    z-index: 99;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #1b1b1b;
+    padding: 45px 20px 15px;
+    flex-direction: column;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.menu__item-popup .menu__btn-add-to-cart {
+    margin-bottom: 50px;
+    margin-top: auto;
+    padding: 18px 51px;
+    align-items: center;
+    border-radius: 38px;
+    font-size: 21px;
+}
+
+.menu__item-popup .menu__item-description {
+    padding: 20px 60px;
+}
+
+.menu__item-popup .checkbox-group {
+    text-align: center;
+    width: 80%;
+    margin-top: auto;
+    flex-basis: unset;
+    margin-bottom: 15px;
+}
+
+.menu__item-popup .menu__item-price {
+    margin-top: 10px;
+}
+
+.menu__item-popup .menu__item-name {
+    font-size: 30px;
+}
+
+.menu__item-popup-close {
+    width: 42px;
+    height: 42px;
+    position: absolute;
+    top: 23px;
+    right: 28px;
+    background-image: url(../images/cross.svg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
 
 #arrow-button {
     width: 50px;
@@ -634,24 +726,56 @@ ul {
     font-size: 12px;
 }
 
-@media (max-width: 680px) {
-    .contacts {
-        font-size: 28px;
-    }
-}
-
-@media (max-width: 680px) and(min-width:458px) {
-    .menu__item {
-        min-height: 0;
-        padding-bottom: 50px;
-    }
-}
-
 .mobile-heading__data {
     display: none;
 }
+@media (max-width: 1257px) {
+    .category__menu .menu__item:nth-child(4n+4){
+        margin-right: 50px;
+    }
+}
+
+@media (max-width: 1080px) {
+    .header__text {
+        display: none;
+    }
+}
 
 @media (max-width: 1010px) {
+    .header__cart-button {
+        position: relative;
+        padding: 0;
+        color: transparent;
+        background-color: transparent;
+        overflow: hidden;
+        width: 79px;
+        height: 75px;
+        background-image: url(../images/shopping-cart.png);
+        background-size: 48px 42px;
+        background-position: 50%;
+        background-repeat: no-repeat;
+        margin-left: auto;
+    }
+    .header__cart-button span {
+        color: #fff;
+        position: absolute;
+        background-color: #635f5f;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6px;
+        right: 9px;
+        top: 7px;
+        width: 14px;
+        height: 14px;
+    }
+    .navigation__item {
+        background-color: rgb(137 137 137 / 47%);
+        border-radius: 23px;
+        padding: 7px 23px;
+        margin-right: -15px;
+    }
     .menu___head-wt {
         display: none;
     }
@@ -685,67 +809,71 @@ ul {
     .mobile-heading__phone {
         display: inline-block;
     }
-    .navigation {
-        display: none !important;
-    }
+}
+
+@media (max-width: 775px) {
     .header {
+        flex-wrap: wrap;
+        height: unset;
+    }
+    .header__contacts {
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 675px) {
+    .menu__item {
         display: none;
     }
-}
-
-@media (max-width: 680px) {
-    .logo {
-        max-width: 300px;
+    .menu__item--mobile {
+        display: flex;
+    }
+    .header__contacts {
+        margin-top: -46px;
+    }
+    .header__time{
+        margin-top: -45px;
     }
 }
 
-@media (max-width: 1200px) and (min-width:805px) {
-    .swiper-container {
-        width: 800px;
+@media (max-width: 570px) {
+    .header__title {
+        display: none;
+    }
+    .header__contacts {
+        flex-basis: 100%;
+        text-align: right;
     }
 }
 
-@media (max-width: 1400px) and (min-width: 1200px) {
-    .swiper-container {
-        width: 1050px;
+@media (max-width: 460px) {
+    .menu__item-image--mobile {
+        width: 120px;
+        height: 120px;
+    }
+    .menu__item-image--mobile img {
+        max-block-size: -webkit-fill-available;
+        max-inline-size: fit-content;
+        width: 120px;
+        height: 120px;
+    }
+    .menu__item-description--mobile {
+        max-height: 63px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-top: 17px;
+        margin-bottom: 10px;
+        text-align: left;
     }
 }
 
-@media (max-width: 805px) {
-    .swiper-container {
-        width: 450px;
+@media (max-width: 400px) {
+    .header__time {
+        font-size: 19px;
     }
-}
+    .header__contacts{
+        display: inline-block;
 
-
-@media (max-width: 458px) {
-    .menu___head {
-        font-size: 37px;
-    }
-    .menu__item {
-        max-width: 280px;
-    }
-    /*.swiper-button-next,*/
-    /*.swiper-button-prev {*/
-    /*    display: none;*/
-    /*}*/
-    .swiper-container {
-        width: 320px;
-    }
-    .swiper-button-prev {
-        left: -2px;
-        width: 44px;
-        background: none;
-    }
-    .swiper-button-next {
-        right: -2px;
-        width: 44px;
-        background: none;
-
-    }
-    .swiper-pagination {
-        display: block;
-        bottom: -5px;
     }
 }
 

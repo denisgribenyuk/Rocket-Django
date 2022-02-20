@@ -60,7 +60,15 @@ class MainPageView(View):
 
 
 class CartView(View):
+    def post(self, request):
+        request_data = request.POST
+        print(request_data)
+        return render(request, 'page-cart.html')
+
+
     def get(self, request):
+        request_data = request
+        print(request_data)
         return render(request, 'page-cart.html')
 
 

@@ -18,7 +18,7 @@ $(document).ready(function() {
 
     $('.js-cart-counter').text((JSON.parse(localStorage.getItem('rocket-delivery'))).length)
 
-    $('.menu__btn-add-to-cart').on('click', function(event) {
+    $('.menu__item').children('.menu__item-footer').children('.menu__btn-add-to-cart').on('click', function(event) {
         event.preventDefault();
         let product_data = {prod_id: '', mod_id: '', mod_id_without_price: '',quantity: 1}
         product_data.prod_id = $(this).parents('.menu__item').attr('data-id')
@@ -203,5 +203,98 @@ $(document).ready(function() {
     // }
 
 
+
+    // Логика добавления в корзину мобильной версии
+    $('.menu__btn-price--mobile').on('click', function (event){
+        let pop_up = $(this).parents('.menu__item--mobile').children('.menu__item-popup')
+        pop_up.fadeIn(200)
+        pop_up.css('display', 'flex')
+        pop_up.children('.menu__item-popup-close').on('click', function (){
+            pop_up.fadeOut(200)
+        })
+
+
+        pop_up.children('.checkbox-group').children('.menu__item-select').children('.menu__item-select-name--variants').on('click',  function () {
+            console.log($(this))
+            $(this).parents('.menu__item-select').children('.menu__item-select-name').removeClass('active')
+            $(this).toggleClass('active')
+            const price = $(this).children('[name="variant"]').attr('data-price')
+            $(this).parents('.menu__item-popup').children('.menu__item-price').text(price + ' руб.')
+        });
+        pop_up.children('.checkbox-group').children('.menu__item-select').children('.menu__item-select-name--variants-without-price').on('click',  function () {
+            $(this).parent('.menu__item-select').children('.menu__item-select-name').removeClass('active')
+            $(this).toggleClass('active')
+        });
+
+
+        pop_up.children('.menu__btn-add-to-cart').on('click', function(event) {
+            event.preventDefault();
+            let product_data = {prod_id: '', mod_id: '', mod_id_without_price: '',quantity: 1}
+            product_data.prod_id = $(this).parents('.menu__item-popup').attr('data-id')
+
+            let order_item_is_ready = true
+            if ($(this).parents('.menu__item-popup').children('.checkbox-group').length){
+                const mod_id = $(this).parents('.menu__item-popup')
+                .children('.checkbox-group')
+                .children('.menu__item-select')
+                .children('.menu__item-select-name.active')
+                .children('input').attr('data-id')
+                if (mod_id){
+                    product_data.mod_id = mod_id
+                } else {
+                    alert('Необходимо выбрать модификатор')
+                    order_item_is_ready = false
+                }
+            }
+            if ($(this).parents('.menu__item-popup').children('.checkbox-group--without-price').length){
+                const mod_id_without_price = $(this).parents('.menu__item-popup')
+                .children('.checkbox-group--without-price')
+                .children('.menu__item-select')
+                .children('.menu__item-select-name.active')
+                .children('input').attr('data-id')
+                if (mod_id_without_price){
+                    product_data.mod_id_without_price = mod_id_without_price
+                } else {
+                    alert('Необходимо выбрать модификатор')
+                    order_item_is_ready = false
+                }
+            }
+
+            if (order_item_is_ready) {
+                const copyOfStorage = JSON.parse(localStorage.getItem('rocket-delivery'));
+
+                let isPresentInStorage = 0;
+                copyOfStorage.forEach(item => {
+                    if (item.prod_id == product_data.prod_id && item.mod_id == product_data.mod_id) {
+                        item.quantity += 1
+                        isPresentInStorage += 1
+                    }
+                })
+
+                if (isPresentInStorage === 0) {
+                    copyOfStorage.push(product_data);
+                }
+
+                localStorage.setItem('rocket-delivery', JSON.stringify(copyOfStorage))
+                $('.js-cart-counter').text(JSON.parse(localStorage.getItem('rocket-delivery')).length)
+            }
+        });
+    })
+
+
+    $('.js-cart-btn').on('click', function (event){
+        event.preventDefault()
+        fetch('./cart/', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json; charset=UTF-8',
+            'X-CSRFToken': window.CSRF_TOKEN
+        },
+        body: localStorage.getItem('rocket-delivery')
+        }).then((content)=>{console.log(content)})
+
+
+    })
 
 })
