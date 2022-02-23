@@ -17,6 +17,7 @@
     <meta name="theme-color" content="#ffffff">
     <title>Корзина</title>
     <link rel="stylesheet" href="{% static 'styles/style-cart.css'  %}?v=1">
+    <script type="text/javascript">     window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
     <script src="{% static 'scripts/jquery-3.4.1.min.js'  %}" defer></script>
     <script src="{% static 'scripts/jquery.maskedinput.min.js'  %}" defer></script>
     <script src="{% static 'scripts/script-cart.js'  %}?v=1" defer></script>

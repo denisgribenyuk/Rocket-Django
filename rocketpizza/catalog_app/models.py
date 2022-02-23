@@ -73,3 +73,22 @@ class SiteData(models.Model):
     class Meta:
         verbose_name = 'Информация на сайте'
         verbose_name_plural = 'Информация на сайте'
+
+
+class Order(models.Model):
+    order = models.CharField(max_length=1000, verbose_name='Состав заказа')
+    name = models.CharField(max_length=100, verbose_name='Имя')
+    phone = models.CharField(max_length=15, verbose_name='Телефон')
+    adress = models.CharField(max_length=1000, verbose_name='Адрес')
+    delivery_time = models.CharField(max_length=100, verbose_name='Информация о времени доставки')
+    pay_method = models.CharField(max_length=20, verbose_name='Метод оплаты')
+    pay_method_sub = models.CharField(max_length=15, verbose_name='Сдача', blank='', null=True)
+    add_info = models.CharField(max_length=1000, verbose_name='Комментарий', blank='', null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Заказ {self.id}'
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'

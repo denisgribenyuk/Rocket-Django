@@ -61,9 +61,9 @@
             {% endfor %}
           </ul>
         {% endif %}
-        <div class="header__cart-button js-cart-btn" >
+        <a href="{% url 'cart' %}" class="header__cart-button js-cart-btn" >
           Корзина <span class="header__cart-counter js-cart-counter"> 0</span>
-        </div>
+        </a>
       </div>
     </div>
     <div class="loader-container" style="display: none">

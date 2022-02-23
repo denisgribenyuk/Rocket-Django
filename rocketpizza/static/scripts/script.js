@@ -282,19 +282,19 @@ $(document).ready(function() {
     })
 
 
-    $('.js-cart-btn').on('click', function (event){
-        event.preventDefault()
-        fetch('./cart/', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json; charset=UTF-8',
-            'X-CSRFToken': window.CSRF_TOKEN
-        },
-        body: localStorage.getItem('rocket-delivery')
-        }).then((content)=>{console.log(content)})
-
-
-    })
+    // $('.js-cart-btn').on('click', function (event){
+    //     event.preventDefault()
+    //     fetch('./cart/', {
+    //     method: 'POST',
+    //     headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json; charset=UTF-8',
+    //         'X-CSRFToken': window.CSRF_TOKEN
+    //     },
+    //     body: localStorage.getItem('rocket-delivery')
+    //     }).then((content)=>{console.log(content)})
+    //
+    //
+    // })
 
 })

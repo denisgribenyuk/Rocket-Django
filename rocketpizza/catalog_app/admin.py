@@ -29,6 +29,11 @@ class ProductModificatorWithoutPriceAdmin(admin.ModelAdmin):
     list_display = ['name']
 
 
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ['name', 'phone', 'adress', 'date']
+
+
 @admin.register(SiteData)
 class SiteDataAdmin(admin.ModelAdmin):
     pass
