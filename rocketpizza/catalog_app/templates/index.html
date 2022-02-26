@@ -252,12 +252,14 @@
         <p>{{ site_data.text_about_delivery }}</p>
         <p><img src="https://pizza-rocket.ru/wp-content/themes/slon/image/logo-loader.png" alt=""></p>
       </section>
-                     <div class="alert-wt">
-                         <div class="alert-wt__backgound" >
-                             <p class="alert-wt__text">Доставляем с 19:00 до 3:00. <br>Предлагаем сейчас неспеша ознакомиться с меню</p>
-                             <div class="alert-wt__confirm">Понятно</div>
-                         </div>
-                     </div>
+         <div class="alert-wt">
+             <div class="alert-wt__backgound" >
+                 <p class="alert-wt__text">Доставляем c <span class="js-work-start-time">{{ site_data.work_start_time }}</span> до <span class="js-work-end-time">{{ site_data.end_start_time }}</span>. <br>
+                    Можете оформить заказ, и мы с вами свяжемся в рабочее время
+                 </p>
+                 <div class="alert-wt__confirm">Понятно</div>
+             </div>
+         </div>
 
     </main>
   </body>

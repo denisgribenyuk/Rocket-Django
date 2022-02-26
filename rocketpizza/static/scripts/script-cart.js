@@ -75,7 +75,14 @@ $(document).ready(async function () {
             products_in_cart.forEach(element => {
                 const cartItem = document.createElement('li');
                 cartItem.classList.add('cart__item');
-                cartItem.innerHTML = `<div class="cart__title cart__item_col-1">${element.name}</div>
+                let prod_title = element.name
+                if (element.mod) {
+                    prod_title += `, ${element.mod}`
+                }
+                if (element.mod_without_price) {
+                    prod_title += `, ${element.mod_without_price}`
+                }
+                cartItem.innerHTML = `<div class="cart__title cart__item_col-1">${prod_title}</div>
                 <div class="cart__quantity cart__item_col-2"><div class="cart__quantity-minus">-</div><span>${element.quantity}</span><div class="cart__quantity-plus">+</div></div>
                 <div class="cart__price cart__item_col-3">${element.price}</div><div class="cart__delete cart__item_col-4"><div data-id="${element.prod_id}" class="cart__delete-btn"></div>`;
                 $('.cart').append(cartItem)

@@ -170,37 +170,29 @@ $(document).ready(function() {
     // });
 
 
-    // function compareTime() {
-    //     let timeNow = new Date();
-    //     timeNow = timeNow.toLocaleTimeString();
-    //     let startWorkTime = `${document.querySelector('.work-start-time').textContent}:00`;
-    //     let endWorkTime = `${document.querySelector('.work-end-time').textContent}:00`;
-    //     if (timeNow < startWorkTime && timeNow > endWorkTime) {
-    //         return false;
-    //     }
-    //     return true;
-    // }
-    //
-    // if (compareTime() == false) {
-    //     setTimeout(() => {
-    //         $(".alert-wt").fadeIn(600);
-    //         $("html,body").css("overflow", "hidden");
-    //         $("body").addClass("fixed");
-    //     }, 3500);
-    //     $(".alert-wt__confirm").on('click', function(event) {
-    //         event.preventDefault();
-    //         $(".alert-wt").fadeOut(500);
-    //         $("html,body").css("overflow", "visible");
-    //         $("body").removeClass("fixed");
-    //     });
-    //     $('.cart-button').on('click', function(event) {
-    //         event.preventDefault();
-    //         $('.alert-wt__text').text('Кнопка корзины доступна только в рабочее время!')
-    //         $(".alert-wt").fadeIn(600);
-    //         $("html,body").css("overflow", "hidden");
-    //         $("body").addClass("fixed");
-    //     })
-    // }
+    function compareTime() {
+        let today = new Date();
+        let date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        let startWorkTime = new Date(Date.parse(`${date} ${document.querySelector('.js-work-start-time').textContent}:00`));
+        let endWorkTime = new Date(Date.parse(`${date} ${document.querySelector('.js-work-end-time').textContent}:00`));
+
+        return !(today < startWorkTime || today > endWorkTime);
+
+    }
+
+    if (compareTime() == false) {
+        setTimeout(() => {
+            $(".alert-wt").fadeIn(600);
+            $("html,body").css("overflow", "hidden");
+            $("body").addClass("fixed");
+        }, 3500);
+        $(".alert-wt__confirm").on('click', function(event) {
+            event.preventDefault();
+            $(".alert-wt").fadeOut(500);
+            $("html,body").css("overflow", "visible");
+            $("body").removeClass("fixed");
+        })
+    }
 
 
 
@@ -277,6 +269,7 @@ $(document).ready(function() {
 
                 localStorage.setItem('rocket-delivery', JSON.stringify(copyOfStorage))
                 $('.js-cart-counter').text(JSON.parse(localStorage.getItem('rocket-delivery')).length)
+                $(this).css('background-color', '#7cb742d6')
             }
         });
     })

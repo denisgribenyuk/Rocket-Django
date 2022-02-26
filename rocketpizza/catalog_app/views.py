@@ -4,7 +4,7 @@ import requests
 from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.views import View
 from django.http import JsonResponse
-from .models import SiteData, Product, Category, ProductModificator, ProductModificatorWithoutPrice
+from .models import SiteData, Product, Category, ProductModificator, ProductModificatorWithoutPrice, Order
 from django.db.models import QuerySet
 from dataclasses import dataclass
 
@@ -122,7 +122,8 @@ class sendToTg(View):
         tab_row_symbol = '\t'
         response_msg = f'{emodji}' \
                        f'{switch_row_symbol}<b>Заказ:</b> {order.replace("|||", switch_row_symbol + tab_row_symbol)}' \
-                       f'{switch_row_symbol}<b>Имя:</b> {name}<b>Телефон:</b> {phone}' \
+                       f'{switch_row_symbol}<b>Имя:</b> {name}' \
+                       f'{switch_row_symbol}<b>Телефон:</b> {phone}' \
                        f'{switch_row_symbol}<b>Адрес:</b> {adress}' \
                        f'{switch_row_symbol}<b>Время доставки:</b> {delivery_time}' \
                        f'{switch_row_symbol}<b>Оплата:</b> {pay_method}' \
@@ -130,7 +131,16 @@ class sendToTg(View):
                        f'{switch_row_symbol}<b>Комментарий:</b> {add_info}'
         request = requests.get(
             f"https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}&parse_mode=html&text={response_msg}")
-        # todo добавление заказа в БД
+        Order(
+            order=order,
+            name=name,
+            phone=phone,
+            adress=adress,
+            delivery_time=delivery_time,
+            pay_method=pay_method,
+            pay_method_sub=pay_method_sub,
+            add_info=add_info
+        ).save()
         return JsonResponse({'result': 'ok'})
 
 
