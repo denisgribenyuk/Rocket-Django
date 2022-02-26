@@ -1,6 +1,7 @@
 import json
 from typing import Any
 import requests
+import logging
 from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.views import View
 from django.http import JsonResponse
@@ -9,10 +10,13 @@ from django.db.models import QuerySet
 from dataclasses import dataclass
 
 
+logger = logging.getLogger(__name__)
+
 # Create your views here.
 
 class MainPageView(View):
     def get(self, request):
+        logger.info('Open main page')
         @dataclass
         class Product_obj:
             id: int
@@ -58,15 +62,20 @@ class MainPageView(View):
             )
             categories_group.append(item)
         site_data = SiteData.objects.get(id=1)
+        logger.info('loading main page is success')
 
         return render(request, 'index.html', {'site_data': site_data, 'categories_group': categories_group})
 
 
 class CartView(View):
     def post(self, request):
+        logger.info('Open cart page')
+        logger.info('get data from localstorage')
         request_data = json.loads(request.body.decode('utf-8'))
         prods_in_cart = []
         total_price = 0
+        logger.info(f'Cart data {request_data}')
+
         for prod in request_data:
             name = Product.objects.get(id=prod['prod_id']).name
             id = prod['prod_id']
@@ -98,6 +107,7 @@ class CartView(View):
                     'quantity': prod['quantity']
                 }
             )
+        logger.info(f'Return {prods_in_cart}')
         return JsonResponse({'prods_in_cart': prods_in_cart, 'total_price': total_price})
 
     def get(self, request):
@@ -106,6 +116,7 @@ class CartView(View):
 
 class sendToTg(View):
     def post(self, request):
+        logger.info('Sending data to tg')
         token = "1641017842:AAHYOTNtQvnVmTYNAYH6jZYMUuVLNCKvnV4"
         chat_id = "-436789562"
         emodji = request.POST.get('emodji')
@@ -117,7 +128,7 @@ class sendToTg(View):
         pay_method = request.POST.get('pay-method')
         pay_method_sub = request.POST.get('pay-method-sub')
         add_info = request.POST.get('add-info')
-        print(request.POST)
+        logger.info(f'Form data {request.POST}')
         switch_row_symbol = '\n'
         tab_row_symbol = '\t'
         response_msg = f'{emodji}' \
@@ -129,9 +140,11 @@ class sendToTg(View):
                        f'{switch_row_symbol}<b>Оплата:</b> {pay_method}' \
                        f'{switch_row_symbol}<b>Сдача:</b> {pay_method_sub}' \
                        f'{switch_row_symbol}<b>Комментарий:</b> {add_info}'
+        logger.info(f'sending message is {response_msg}')
         request = requests.get(
             f"https://api.telegram.org/bot{token}/sendMessage?chat_id={chat_id}&parse_mode=html&text={response_msg}")
-        Order(
+        logger.info(f'Message was sended.')
+        new_order = Order(
             order=order,
             name=name,
             phone=phone,
@@ -140,10 +153,13 @@ class sendToTg(View):
             pay_method=pay_method,
             pay_method_sub=pay_method_sub,
             add_info=add_info
-        ).save()
+        )
+        logger.info(f'New object in DB was created. Object {new_order}')
+        new_order.save()
         return JsonResponse({'result': 'ok'})
 
 
 class OrderConfirmView(View):
     def get(self, request):
+        logger.info(f'Open page thx')
         return render(request, 'page-thx.html')
