@@ -167,16 +167,20 @@
                                     </div>
                                 {% endif %}
                                 {% if prod.modificators_without_price %}
-                                    <div class="checkbox-group checkbox-group--without-price">
-                                        <form class="menu__item-select menu__item-select custom-checkbox-group">
+                                    <div class="checkbox-group--without-price">
                                           <input type="text" hidden name="diam-value" class="variants-value-hidden-js">
-                                          {% for mod in prod.modificators_without_price %}
-                                              <label class="menu__item-select-name menu__item-select-name--variants-without-price radio">
-                                                <input type="radio" required name="variants-without-price" checked value="{{ mod.name }}" data-id="{{ mod.id }}">
-                                                  <span class="radio__text">{{ mod.name }}</span>
-                                              </label>
-                                          {% endfor %}
-                                        </form>
+                                          <div class="menu__item-dropdown">
+                                                <select name="" class="dropdown-select menu__item-select-name--variants-without-price" >
+                                                 <option value="">Соус</option>
+                                                  {% for mod in prod.modificators_without_price %}
+{#                                                      <label class="menu__item-select-name menu__item-select-name--variants-without-price radio">#}
+{#                                                        <input type="radio" required name="variants-without-price" checked value="{{ mod.name }}" data-id="{{ mod.id }}">#}
+{#                                                          <span class="radio__text">{{ mod.name }}</span>#}
+{#                                                      </label>#}
+                                                     <option value="{{ mod.id }}"  data-id="{{ mod.id }}">{{ mod.name }}</option>
+                                                  {% endfor %}
+                                                </select>
+                                            </div>
                                     </div>
                                 {% endif %}
                                 <button class="menu__btn-add-to-cart" data-price="{{ item.price }}" data-id="{{ item.id }}">В корзину</button>
@@ -208,16 +212,20 @@
                                     </div>
                                 {% endif %}
                                 {% if prod.modificators_without_price %}
-                                    <div class="checkbox-group checkbox-group--without-price">
-                                        <form class="menu__item-select menu__item-select custom-checkbox-group">
+                                    <div class="checkbox-group--without-price">
                                           <input type="text" hidden name="diam-value" class="variants-value-hidden-js">
-                                          {% for mod in prod.modificators_without_price %}
-                                              <label class="menu__item-select-name menu__item-select-name--variants-without-price radio">
-                                                <input type="radio" required name="variants-without-price" checked value="{{ mod.name }}" data-id="{{ mod.id }}">
-                                                  <span class="radio__text">{{ mod.name }}</span>
-                                              </label>
-                                          {% endfor %}
-                                        </form>
+                                          <div class="menu__item-dropdown">
+                                                <select name="" class="dropdown-select menu__item-select-name--variants-without-price" >
+                                                 <option value="">Соус</option>
+                                                  {% for mod in prod.modificators_without_price %}
+{#                                                      <label class="menu__item-select-name menu__item-select-name--variants-without-price radio">#}
+{#                                                        <input type="radio" required name="variants-without-price" checked value="{{ mod.name }}" data-id="{{ mod.id }}">#}
+{#                                                          <span class="radio__text">{{ mod.name }}</span>#}
+{#                                                      </label>#}
+                                                     <option value="{{ mod.id }}"  data-id="{{ mod.id }}">{{ mod.name }}</option>
+                                                  {% endfor %}
+                                                </select>
+                                            </div>
                                     </div>
                                 {% endif %}
                                 <div class="menu__item-price">

@@ -503,6 +503,12 @@ ul {
     flex-basis: 100%;
 }
 
+.checkbox-group--without-price {
+    margin-bottom: 15px;
+    width: 100%;
+    flex-basis: 100%;
+}
+
 .menu__item-select {
     margin-bottom: 18px;
     display: flex;
@@ -604,8 +610,35 @@ ul {
     font-size: 20px;
 }
 
+.menu__item-dropdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    height: 35px;
+    width: 100%;
+    background: transparent;
+}
+.menu__item-dropdown select {
+    background-color: transparent;
+    border: none;
+    font-size: 14px;
+    color: #dc7d43;
+}
+.menu__item-dropdown select {
+    background-color: transparent;
+    font-size: 14px;
+    color: #dc7d43;
+    width: 100%;
+    outline: none;
+    border: 1px solid #dc7d43;
+    padding: 7px 24px;
+    border-radius: 10px;
+}
+
 .menu__btn-price--mobile {
-        border: none;
+    border: none;
     background-color: #dd5f08;
     color: #000;
     padding: 9px 18px;
@@ -641,6 +674,14 @@ ul {
 }
 
 .menu__item-popup .checkbox-group {
+    text-align: center;
+    width: 80%;
+    margin-top: auto;
+    flex-basis: unset;
+    margin-bottom: 15px;
+}
+
+.menu__item-popup .checkbox-group--without-price {
     text-align: center;
     width: 80%;
     margin-top: auto;

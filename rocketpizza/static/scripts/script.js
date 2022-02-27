@@ -42,9 +42,7 @@ $(document).ready(function() {
             const mod_id_without_price = $(this).parents('.menu__item')
             .children('.menu__item-footer')
             .children('.checkbox-group--without-price')
-            .children('.menu__item-select')
-            .children('.menu__item-select-name.active')
-            .children('input').attr('data-id')
+            .children('.variants-value-hidden-js').attr('data-id')
             if (mod_id_without_price){
                 product_data.mod_id_without_price = mod_id_without_price
             } else {
@@ -241,9 +239,7 @@ $(document).ready(function() {
             if ($(this).parents('.menu__item-popup').children('.checkbox-group--without-price').length){
                 const mod_id_without_price = $(this).parents('.menu__item-popup')
                 .children('.checkbox-group--without-price')
-                .children('.menu__item-select')
-                .children('.menu__item-select-name.active')
-                .children('input').attr('data-id')
+                .children('.variants-value-hidden-js').attr('data-id')
                 if (mod_id_without_price){
                     product_data.mod_id_without_price = mod_id_without_price
                 } else {
@@ -274,7 +270,9 @@ $(document).ready(function() {
         });
     })
 
-
+    $('.dropdown-select').on('change', function (event){
+        $(this).parents('.checkbox-group--without-price').children('.variants-value-hidden-js').attr('data-id', $(this).val())
+    })
     // $('.js-cart-btn').on('click', function (event){
     //     event.preventDefault()
     //     fetch('./cart/', {
