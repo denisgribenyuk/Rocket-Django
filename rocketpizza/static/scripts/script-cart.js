@@ -29,6 +29,7 @@ $(document).ready(async function () {
 
     async function getSum() {
         let sumPrice = await get_prods_from_backend();
+        // sumPrice = sumPrice.total_price
         // Сумма корзины, если есть какая-либо акция
         // const saleValue = 15
         // const minFreeDeliverySum = 600
@@ -214,9 +215,9 @@ $(document).ready(async function () {
     // Обработка отправки формы
     $('.phone__form').on('submit', function (event) {
         event.preventDefault();
-
-        // let orderInfo = $('.cart__title, .cart__quantity, .cart__sum').text();
-        // orderInfo = orderInfo.replace(/'+'/g, `;\n      `);
+        $(this).children('.input__submit').attr('disabled', 'True')
+        $(this).children('.input__submit').css('opacity', '0.2')
+        $('.loader-container').fadeIn(400)
         let cartItems = document.querySelectorAll('.cart__item')
         let orderInfo = '';
         cartItems.forEach(el => {

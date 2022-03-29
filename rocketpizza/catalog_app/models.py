@@ -43,7 +43,7 @@ class Product(models.Model):
     start_price = models.IntegerField(blank=True, null=True, verbose_name='Стартовая цена продукта')
     description = models.TextField(blank=True, default='', null=True, max_length=500, verbose_name='Описание товара')
     category = models.ForeignKey('Category', default=None, null=True, on_delete=models.CASCADE, verbose_name='Категория')
-    image = models.ImageField(upload_to='static/prod_images', null=True, verbose_name='Изображение продукта')
+    image = models.ImageField(upload_to='prod_images', null=True, verbose_name='Изображение продукта')
     is_visible = models.BooleanField(default=True, null=True, verbose_name='Видимость продукта')
     modificator = models.ManyToManyField(ProductModificator, blank=True, null=True)
     modificator_no_price = models.ManyToManyField(ProductModificatorWithoutPrice, blank=True, null=True)
@@ -66,6 +66,9 @@ class SiteData(models.Model):
     self_address = models.CharField(default='', max_length=150, verbose_name='Адрес местоположения')
     contact_phone_viewed = models.CharField(default='', max_length=10, verbose_name='Номер телефона доставки, видимый')
     contact_phone_full = models.CharField(default='', max_length=10, verbose_name='Номер телефона доставки, полный')
+    site_is_work = models.BooleanField(default=True, blank=True, verbose_name='Сайт включен?')
+    not_available_site_text = models.TextField(default='', blank='', verbose_name='Если сайт выключен, то что выводить?')
+    min_order = models.IntegerField(default=0, blank=0, verbose_name='Минимальная сумма заказа.')
 
     def __str__(self):
         return f'Данные сайта. Изменять их.'

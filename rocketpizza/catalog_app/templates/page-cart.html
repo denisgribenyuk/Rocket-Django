@@ -16,79 +16,108 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
     <title>Корзина</title>
-    <link rel="stylesheet" href="{% static 'styles/style-cart.css'  %}?v=1">
+    <link rel="stylesheet" href="{% static 'styles/style-cart.css'  %}?v=2">
     <script type="text/javascript">     window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
     <script src="{% static 'scripts/jquery-3.4.1.min.js'  %}" defer></script>
     <script src="{% static 'scripts/jquery.maskedinput.min.js'  %}" defer></script>
-    <script src="{% static 'scripts/script-cart.js'  %}?v=1" defer></script>
-    
+    <script src="{% static 'scripts/script-cart.js'  %}?v=2" defer></script>
+   <!-- Meta Pixel Code --> 
+        <script> 
+        !function(f,b,e,v,n,t,s) 
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod? 
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)}; 
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0'; 
+        n.queue=[];t=b.createElement(e);t.async=!0; 
+        t.src=v;s=b.getElementsByTagName(e)[0]; 
+        s.parentNode.insertBefore(t,s)}(window, document,'script', 
+        'https://connect.facebook.net/en_US/fbevents.js'); 
+        fbq('init', '656602195597520'); 
+        fbq('track', 'PageView'); 
+          fbq('track', 'AddToCart'); 
+        </script> 
+        <noscript><img height="1" width="1" style="display:none" 
+        src="https://www.facebook.com/tr?id=656602195597520&ev=PageView&noscript=1" 
+        /></noscript> 
+    <!-- End Meta Pixel Code -->
 </head>
 
 <body>
+    {% if site_data.site_is_work %}
 
 
-    <div class="data-time-block" style="position:absolute; top:0; left:0; width:0px; height:0px; overflow:hidden;">
-        <span class="work-start-time"><?php echo get_post_meta(get_the_ID(), 'work-start-time', true ); ?></span>
-        <span class="work-end-time"><?php echo get_post_meta(get_the_ID(), 'work-end-time', true ); ?></span>
-    </div>
-    <div class="fixed-container">
-        <a href="../" class="back-to-menu"></a>
-        <h1 class="page__heading">Корзина</h1>
-        <div class="cart__empty">В корзине нет товаров</div>
-        <ul class="cart">
-            <li class="cart__item cart__heading">
-                <div class="cart__heading-title  cart__item_col-1">Название</div>
-                <div class="cart__heading-quantity  cart__item_col-2">Кол-во</div>
-                <div class="cart__heading-price cart__item_col-3">Цена</div>
-                <div class="cart__heading-price cart__item_col-4"></div>
-            </li>
-        </ul>
-        <div class="cart__sum"></div>
-        <div class="cart__text">Внимание! Оплата доступна <ins>только</ins> при получении. К оплате принимаются наличные и банковские карты. Для продолжения введите Ваши контактные данные, и с Вами обязательно свяжутся!
+        <div class="data-time-block" style="position:absolute; top:0; left:0; width:0px; height:0px; overflow:hidden;">
+            <span class="work-start-time"><?php echo get_post_meta(get_the_ID(), 'work-start-time', true ); ?></span>
+            <span class="work-end-time"><?php echo get_post_meta(get_the_ID(), 'work-end-time', true ); ?></span>
         </div>
-        <form class="phone__form" method="POST" action="">
-            <input type="text" hidden name="emodji" value="&#x1f355;&#x1F525;&#x1f355;&#x1F525;&#x1f355;&#x1F525;&#x1f355;&#x1F525;&#x1f355;">
-            <input type="text" name="order" hidden class="form__order">
-            <input type="text" class="input__name" name="name" id="name" placeholder="Введите ваше имя:" required>
-            <input type="text" class="input__number" id="phone" name="phone" placeholder="8(___) ___-____" required autocomplete="off">
-            <textarea type="text" class="input__add-info" id="add-info" name="add-info" placeholder="Примечание к заказу"></textarea>
-            <div class="form-adress__block">
-                <h4 class="form-adress__heading">Введите Ваш адрес:</h4>
-                <input type="text" name="adress" class="form-adress__data" hidden>
-                <div class="form-adress__inputs">
-                    <input type="text" class="form-adress__street" id="street" placeholder="Улица (прим. Кирова)" required>
-                    <input type="text" class="form-adress__build" id="build" placeholder="Дом (прм. 3а)" required>
-                    <input type="text" class="form-adress__apartment" id="apartment" placeholder="Кв. (прим. 14)" required>
-                    <input type="text" class="form-adress__entrance" id="apartment" placeholder="Подъезд (3)">
-<!--                    <input type="text" class="form-adress__intercom" id="apartment" placeholder="Домофон (26)">-->
-                    <input type="text" class="form-adress__floor" id="apartment" placeholder="Этаж (4)">
-                </div>
+        <div class="fixed-container">
+            <a href="../" class="back-to-menu"></a>
+            <h1 class="page__heading">Корзина</h1>
+            <div class="cart__empty">В корзине нет товаров</div>
+            <ul class="cart">
+                <li class="cart__item cart__heading">
+                    <div class="cart__heading-title  cart__item_col-1">Название</div>
+                    <div class="cart__heading-quantity  cart__item_col-2">Кол-во</div>
+                    <div class="cart__heading-price cart__item_col-3">Цена</div>
+                    <div class="cart__heading-price cart__item_col-4"></div>
+                </li>
+            </ul>
+            <div class="cart__sum"></div>
+            <div class="cart__text">Минимальная сумма заказа - {{ site_data.min_order }} руб.</div>
+            <div class="cart__text">
+                Внимание! Оплата доступна <ins>только</ins> при получении. К оплате принимаются наличные и банковские карты. Для продолжения введите Ваши контактные данные, и с Вами обязательно свяжутся!
             </div>
-            <div class="delivery-time__block">
-                <h4 class="delivery-time__heading">Выберите время доставки:</h4>
-                <p class="delivery-time__item"><input type="radio" name="delivery-time" value="Привезти как можно быстрее" checked required class="delivery-time__now">Привезти как можно быстрее</p>
-                <p class="delivery-time__item"><input type="radio" name="delivery-time" value="Привезти ко времени" required class="delivery-time__later">Привезти ко времени</p>
-                <div class="delivery-time-sub__number-block">
-                    <label for="delivery-time-sub__number" class="delivery-time-sub__number-heading">Привезти к скольки?</label>
-                    <input type="text" class="delivery-time-sub__number" name="delivery-time-sub__number" id="delivery-time-sub__number">
-                </div>
-            </div>
-            <div class="pay-method__block">
-                <h4 class="pay-method__heading">Выберите способ оплаты:</h4>
-                <p class="pay-method__item"><input type="radio" name="pay-method" value="Оплата картой курьеру" checked required class="pay-method__card">Оплата картой курьеру</p>
-                <p class="pay-method__item"><input type="radio" name="pay-method" value="Оплата наличными курьеру" required class="pay-method__cash">Оплата наличными курьеру</p>
-                <div class="pay-method__sub-block">
-                    <p class="pay-method__item-sub"><input type="radio" name="pay-method-sub" class="pay-method-sub__input dont-need-cash" value="У меня без сдачи!!!" checked>У меня без сдачи!!!</p>
-                    <p class="pay-method__item-sub"><input type="radio" name="pay-method-sub" class="pay-method-sub__input need-cash" value="Понадобится сдача">Понадобится сдача</p>
-                    <div class="pay-method-sub__number-block">
-                        <label for="pay-method-sub__number" class="pay-method-sub__number-heading">Сдача со скольки?</label>
-                        <input type="number" class="pay-method-sub__number"  id="pay-method-sub__number">
+            <form class="phone__form" method="POST" action="">
+                <input type="text" hidden name="emodji" value="&#x1f355;&#x1F525;&#x1f355;&#x1F525;&#x1f355;&#x1F525;&#x1f355;&#x1F525;&#x1f355;">
+                <input type="text" name="order" hidden class="form__order">
+                <input type="text" class="input__name" name="name" id="name" placeholder="Введите ваше имя:" required>
+                <input type="text" class="input__number" id="phone" name="phone" placeholder="8(___) ___-____" required autocomplete="off">
+                <textarea type="text" class="input__add-info" id="add-info" name="add-info" placeholder="Примечание к заказу"></textarea>
+                <div class="form-adress__block">
+                    <h4 class="form-adress__heading">Введите Ваш адрес:</h4>
+                    <input type="text" name="adress" class="form-adress__data" hidden>
+                    <div class="form-adress__inputs">
+                        <input type="text" class="form-adress__street" id="street" placeholder="Улица (прим. Кирова)" required>
+                        <input type="text" class="form-adress__build" id="build" placeholder="Дом (прм. 3а)" required>
+                        <input type="text" class="form-adress__apartment" id="apartment" placeholder="Кв. (прим. 14)">
+                        <input type="text" class="form-adress__entrance" id="apartment" placeholder="Подъезд (3)">
+    <!--                    <input type="text" class="form-adress__intercom" id="apartment" placeholder="Домофон (26)">-->
+                        <input type="text" class="form-adress__floor" id="apartment" placeholder="Этаж (4)">
                     </div>
                 </div>
+                <div class="delivery-time__block">
+                    <h4 class="delivery-time__heading">Выберите время доставки:</h4>
+                    <p class="delivery-time__item"><input type="radio" name="delivery-time" value="Привезти как можно быстрее" checked required class="delivery-time__now">Привезти как можно быстрее</p>
+                    <p class="delivery-time__item"><input type="radio" name="delivery-time" value="Привезти ко времени" required class="delivery-time__later">Привезти ко времени</p>
+                    <div class="delivery-time-sub__number-block">
+                        <label for="delivery-time-sub__number" class="delivery-time-sub__number-heading">Привезти к скольки?</label>
+                        <input type="text" class="delivery-time-sub__number" name="delivery-time-sub__number" id="delivery-time-sub__number">
+                    </div>
+                </div>
+                <div class="pay-method__block">
+                    <h4 class="pay-method__heading">Выберите способ оплаты:</h4>
+                    <p class="pay-method__item"><input type="radio" name="pay-method" value="Оплата картой курьеру" checked required class="pay-method__card">Оплата картой курьеру</p>
+                    <p class="pay-method__item"><input type="radio" name="pay-method" value="Оплата наличными курьеру" required class="pay-method__cash">Оплата наличными курьеру</p>
+                    <div class="pay-method__sub-block">
+                        <p class="pay-method__item-sub"><input type="radio" name="pay-method-sub" class="pay-method-sub__input dont-need-cash" value="У меня без сдачи!!!" checked>У меня без сдачи!!!</p>
+                        <p class="pay-method__item-sub"><input type="radio" name="pay-method-sub" class="pay-method-sub__input need-cash" value="Понадобится сдача">Понадобится сдача</p>
+                        <div class="pay-method-sub__number-block">
+                            <label for="pay-method-sub__number" class="pay-method-sub__number-heading">Сдача со скольки?</label>
+                            <input type="number" class="pay-method-sub__number"  id="pay-method-sub__number">
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" name="submit" class="input__submit">
+            </form>
+            <div class="loader-container" style="display: none">
+              <img src="{% static 'images/logo-loader.png' %}" alt="" class="loader-image">
+                <p class="loader-text">Отправляем ваш заказ</p>
             </div>
-            <input type="submit" name="submit" class="input__submit">
-        </form>
-    </div>
+        </div>
+    {% else %}
+        <div class="main-alert">
+            <div class="main-alert__text">{{ site_data.not_available_site_text|safe }}</div>
+        </div>
+    {% endif %}
 </body>
 
 </html>

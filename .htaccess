@@ -1,0 +1,4 @@
+PassengerEnabled On
+PassengerAppRoot /home/r/raketams/rocket-django/public_html/rocketpizza/rocketpizza
+PassengerPython /home/r/raketams/rocket-django/public_html/venv/bin/python
+

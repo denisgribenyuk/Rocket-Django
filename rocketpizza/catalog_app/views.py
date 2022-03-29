@@ -1,28 +1,35 @@
 import json
-from typing import Any
+from typing import Any, List, Union
 import requests
 import logging
 from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.views import View
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from .models import SiteData, Product, Category, ProductModificator, ProductModificatorWithoutPrice, Order
 from django.db.models import QuerySet
 from dataclasses import dataclass
+from django.conf import settings
 
+import tg_logger
 
 logger = logging.getLogger(__name__)
 
+token = "1641017842:AAHYOTNtQvnVmTYNAYH6jZYMUuVLNCKvnV4"
+chat_id = [115891939]
+tg_logger.setup(logger, token=token, users=chat_id)
 # Create your views here.
 
 class MainPageView(View):
     def get(self, request):
-        logger.info('Open main page')
+        logger.info(f'Open main page. '
+                    f'\n**Agent**:{request.headers["User-Agent"]}')
+
         @dataclass
         class Product_obj:
             id: int
             name: str
-            price: [int, None]
-            start_price: [int, None]
+            price: Union[int, None]
+            start_price: Union[int, None]
             description: str
             category: Any
             is_visible: bool
@@ -34,7 +41,7 @@ class MainPageView(View):
         class Category_obj:
             name: str
             is_visible: bool
-            products: list[Product_obj]
+            products: List[Product_obj]
 
         categories_group = []
         product_group = []
@@ -111,7 +118,8 @@ class CartView(View):
         return JsonResponse({'prods_in_cart': prods_in_cart, 'total_price': total_price})
 
     def get(self, request):
-        return render(request, 'page-cart.html')
+        site_data = SiteData.objects.get(id=1)
+        return render(request, 'page-cart.html', {'site_data': site_data})
 
 
 class sendToTg(View):

@@ -4,11 +4,11 @@ $(document).ready(function() {
         $(".loader-container").fadeOut(300);
     }, 3000);
 
-    $(".navigation").on("click", "#arrow-button", function(event) {
+    $(".navigation").on("click", "a", function(event) {
         event.preventDefault();
         var id = $(this).attr('href'),
             top = $(id).offset().top;
-        $('body,html').animate({ scrollTop: top }, 1500);
+        $('body,html').animate({ scrollTop: top-90 }, 400);
     });
 
     if (!localStorage.getItem('rocket-delivery')) {
@@ -266,6 +266,8 @@ $(document).ready(function() {
                 localStorage.setItem('rocket-delivery', JSON.stringify(copyOfStorage))
                 $('.js-cart-counter').text(JSON.parse(localStorage.getItem('rocket-delivery')).length)
                 $(this).css('background-color', '#7cb742d6')
+                function fade_out_parent(self) {self.parents('.menu__item-popup').fadeOut(200)};
+                setTimeout(fade_out_parent, 1500, $(this))
             }
         });
     })

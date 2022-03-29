@@ -20,255 +20,233 @@
     <title>{{ site_data.site_name_browser }}</title>
   
     <link rel="stylesheet" id="swiper-css" href="{% static 'styles/swiper-bundle.min.css' %}?ver=5.7.4" type="text/css" media="all">
-    <link rel="stylesheet" id="main-css" href="{% static 'styles/style.css' %}?ver=1" type="text/css" media="all">
+    <link rel="stylesheet" id="main-css" href="{% static 'styles/style.css' %}?ver=11" type="text/css" media="all">
     <script type="text/javascript" src="{% static 'scripts/jquery-3.4.1.min.js' %}?ver=5.7.4" id="jquery-js"></script>
     <script type="text/javascript" src="{% static 'scripts/swiper-bundle.min.js' %}?ver=5.7.4" id="swiper-js"></script>
     <script type="text/javascript" src="{% static 'scripts/ScrollMagic.min.js' %}?ver=5.7.4" id="scrollMagic-js"></script>
     <script type="text/javascript" src="{% static 'scripts/debug.addIndicators.min.js' %}?ver=5.7.4" id="crollmagic-debug-js"></script>
     <script type="text/javascript">     window.CSRF_TOKEN = "{{ csrf_token }}"; </script>
-    <script type="text/javascript" src="{% static 'scripts/script.js' %}?ver=1" id="main-js"></script>
+    <script type="text/javascript" src="{% static 'scripts/script.js' %}?ver=11" id="main-js"></script>
     <link rel="canonical" href="https://pizza-rocket.ru/">
     <link rel="shortlink" href="https://pizza-rocket.ru/">
+    <!-- Meta Pixel Code -->
+        <script>
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '656602195597520');
+            fbq('track', 'PageView');
+        </script>
+        <noscript>
+            <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=656602195597520&ev=PageView&noscript=1"/>
+        </noscript>
+    <!-- End Meta Pixel Code -->
   </head>
   <body>
-    <header>
-      <div class="fixed-container">
-        <div class="header">
-          <div class="header__logo" id="logo-top" style="background-image: url({% static 'images/logo.png' %});"> </div>
-          <div class="header__title">
-            Rocket<br>Pizza
+    {% if site_data.site_is_work %}
+        <header>
+          <div class="fixed-container">
+            <div class="header">
+              <div class="header__logo" id="logo-top" style="background-image: url({% static 'images/logo.png' %});"> </div>
+              <div class="header__title">
+                Rocket<br>Pizza
+              </div>
+              <div class="header__text">
+                {{ site_data.main_title|linebreaksbr }}
+              </div>
+              <div class="header__time">
+                принимаем заказы<br>c {{ site_data.work_start_time }} до {{ site_data.end_start_time }}
+              </div>
+              <a class="contacts__call contacts header__contacts" href="tel:{{ site_data.contact_phone_full }}">{{ site_data.contact_phone_viewed }}</a>
+            </div>
           </div>
-          <div class="header__text">
-            {{ site_data.main_title|linebreaksbr }}
+        </header>
+        <div class="header__nav">
+          <div class="fixed-container">
+            {% if categories_group %}
+              <ul class="navigation">
+                {% for item in categories_group %}
+                  {% if item.is_visible %}
+                    <li>
+                      <a class="navigation__item" href="#{{ item.name }}">{{ item.name }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            {% endif %}
+            <a href="{% url 'cart' %}" class="header__cart-button js-cart-btn" >
+              Корзина <span class="header__cart-counter js-cart-counter"> 0</span>
+            </a>
           </div>
-          <div class="header__time">
-            доставляем<br>c {{ site_data.work_start_time }} до {{ site_data.end_start_time }}
-          </div>
-          <a class="contacts__call contacts header__contacts" href="tel:{{ site_data.contact_phone_full }}">{{ site_data.contact_phone_viewed }}</a>
         </div>
-      </div>
-    </header>
-    <div class="header__nav">
-      <div class="fixed-container">
-        {% if categories_group %}
-          <ul class="navigation">
-            {% for item in categories_group %}
-              {% if item.is_visible %}
-                <li>
-                  <a class="navigation__item" href="#{{ item.name }}">{{ item.name }}</a>
-                </li>
-              {% endif %}
-            {% endfor %}
-          </ul>
-        {% endif %}
-        <a href="{% url 'cart' %}" class="header__cart-button js-cart-btn" >
-          Корзина <span class="header__cart-counter js-cart-counter"> 0</span>
-        </a>
-      </div>
-    </div>
-    <div class="loader-container" style="display: none">
-      <img src="{% static 'images/logo-loader.png' %}" alt="" class="loader-image">
-    </div>
-    <main>
+        <div class="loader-container">
+          <img src="{% static 'images/logo-loader.png' %}" alt="" class="loader-image">
+        </div>
+        <main>
+          <section>
+            <div class="fixed-container">
+              {% if categories_group %}
+                {% for cat in categories_group %}
+                  {% if cat.is_visible %}
+                    <div class="category">
+                      <p class="yakor category__title" id="{{ cat.name }}">{{ cat.name }}</p>
+                      {% if cat.products %}
+                        <div class="category__menu">
+                          {% for prod in cat.products %}
+                            <div class="menu__item--mobile" data-id="{{ prod.id }}">
+                                <div class="menu__item-image--mobile">
+                                    <img src="{{ prod.image }}" alt="" width="200" height="200">
+                                </div>
+                                <div class="menu__item-about--mobile">
+                                    <div class="menu__item-name--mobile">
+                                        {{ prod.name }}
+                                    </div>
+                                    <div class="menu__item-description--mobile">
+                                        {{ prod.description }}
+                                    </div>
+                                    <button class="menu__btn-price--mobile">
+                                        {% if prod.price %}
+                                          {{ prod.price }} руб.
+                                        {% elif prod.start_price %}
+                                          от {{ prod.start_price }} руб.
+                                        {% endif %}
+                                    </button>
+                                </div>
 
-{#      <nav>#}
-{#        <div class="fixed-container">#}
-{#          <div class="mobile-menu__navigation">#}
-{#            <div class="mobile-menu__close js-close-menu"></div>#}
-{#            <p class="mobile-menu__head">МЕНЮ</p>#}
-{#            {% if categories_group %}#}
-{#              <ul class="mobile-menu__navigation-list">#}
-{#                {% for item in categories_group %}#}
-{#                  {% if item.is_visible %}#}
-{#                    <li>#}
-{#                      <a class="mobile-menu__navigation-item" href="#{{ item.name }}">{{ item.name }}</a>#}
-{#                    </li>#}
-{#                  {% endif %}#}
-{#                {% endfor %}#}
-{#                <li class="mobile-menu__links">#}
-{#                  <p>{{ site_data.self_address }}</p>#}
-{#                  <div class="mobile-menu__contacts">#}
-{#                    <a class="contacts__call" href="tel:{{ site_data.contact_phone_full }}">{{ site_data.contact_phone_viewed }}</a>#}
-{#                  </div>#}
-{#                </li>#}
-{#              </ul>#}
-{#            {% endif %}#}
-{#          </div>#}
-{#          <a id="arrow-button" href="#logo-top"></a>#}
-{#          <div class="mobile-heading">#}
-{#            <div class="mobile-menu__burger js-burger"></div>#}
-{#            <div class="mobile-heading__data">#}
-{#              <span>C {{ site_data.work_start_time }} до {{ site_data.end_start_time }}</span>#}
-{#              <a href="tel:{{ site_data.contact_phone_full }}" class="mobile-heading__phone">{{ site_data.contact_phone_viewed }}</a>#}
-{#            </div>#}
-{#            <a class="cart-button" href="/cart">#}
-{#              <div class="cart-counter">0</div>#}
-{#            </a>#}
-{#          </div>#}
-{#        </div>#}
-{#      </nav>#}
+                                <div class="menu__item-popup" data-id="{{ prod.id }}">
+                                    <img src="{{ prod.image }}" alt="" width="200" height="200">
+                                    <div class="menu__item-name">
+                                        {{ prod.name }}
+                                    </div>
+                                    <div class="menu__item-price">
+                                        {% if prod.price %}
+                                          {{ prod.price }} руб.
+                                        {% elif prod.start_price %}
+                                          от {{ prod.start_price }} руб.
+                                        {% endif %}
+                                    </div>
+                                    <div class="menu__item-description">
+                                        {{ prod.description }}
+                                    </div>
+                                    {% if prod.modificators %}
+                                        <div class="checkbox-group">
+                                            <form class="menu__item-select menu__item-select custom-checkbox-group">
+                                              <input type="text" hidden name="diam-value" class="variants-value-hidden-js">
+                                              {% for mod in prod.modificators %}
+                                                  <label class="menu__item-select-name menu__item-select-name--variants radio">
+                                                    <input type="radio" name="variant" required checked data-price="{{ mod.price }}" data-id="{{ mod.id }}"><span class="radio__text">{{ mod.name }}<br></span>
+                                                  </label>
+                                              {% endfor %}
+                                            </form>
+                                        </div>
+                                    {% endif %}
+                                    {% if prod.modificators_without_price %}
+                                        <div class="checkbox-group--without-price">
+                                              <input type="text" hidden name="diam-value" class="variants-value-hidden-js">
+                                              <div class="menu__item-dropdown">
+                                                    <select name="" class="dropdown-select menu__item-select-name--variants-without-price" >
+                                                     <option value="">Соус</option>
+                                                      {% for mod in prod.modificators_without_price %}
+                                                         <option value="{{ mod.id }}"  data-id="{{ mod.id }}">{{ mod.name }}</option>
+                                                      {% endfor %}
+                                                    </select>
+                                                </div>
+                                        </div>
+                                    {% endif %}
+                                    <button class="menu__btn-add-to-cart" data-price="{{ item.price }}" data-id="{{ item.id }}">В корзину</button>
+                                    <div class="menu__item-popup-close"></div>
+                                </div>
 
-
-      <section>
-        <div class="fixed-container">
-          {% if categories_group %}
-            {% for cat in categories_group %}
-              {% if cat.is_visible %}
-                <div class="category">
-                  <p class="yakor category__title" id="{{ cat.name }}">{{ cat.name }}</p>
-                  {% if cat.products %}
-                    <div class="category__menu">
-                      {% for prod in cat.products %}
-                        <div class="menu__item--mobile" data-id="{{ prod.id }}">
-                            <div class="menu__item-image--mobile">
+                            </div>
+                            <div class="menu__item" data-id="{{ prod.id }}">
+                              <div class="menu__item-image">
                                 <img src="{{ prod.image }}" alt="" width="200" height="200">
-                            </div>
-                            <div class="menu__item-about--mobile">
-                                <div class="menu__item-name--mobile">
-                                    {{ prod.name }}
-                                </div>
-                                <div class="menu__item-description--mobile">
-                                    {{ prod.description }}
-                                </div>
-                                <button class="menu__btn-price--mobile">
-                                    {% if prod.price %}
-                                      {{ prod.price }} руб.
-                                    {% elif prod.start_price %}
-                                      от {{ prod.start_price }} руб.
+                              </div>
+                              <div class="menu__item-name">
+                                {{ prod.name }}
+                              </div>
+                              <div class="menu__item-description">
+                                {{ prod.description }}
+                              </div>
+                                <div class="menu__item-footer">
+                                    {% if prod.modificators %}
+                                        <div class="checkbox-group">
+                                            <form class="menu__item-select menu__item-select custom-checkbox-group">
+                                              <input type="text" hidden name="diam-value" class="variants-value-hidden-js">
+                                              {% for mod in prod.modificators %}
+                                                  <label class="menu__item-select-name menu__item-select-name--variants radio">
+                                                    <input type="radio" name="variant" required checked data-price="{{ mod.price }}" data-id="{{ mod.id }}"><span class="radio__text">{{ mod.name }}<br></span>
+                                                  </label>
+                                              {% endfor %}
+                                            </form>
+                                        </div>
                                     {% endif %}
-                                </button>
-                            </div>
-
-                            <div class="menu__item-popup" data-id="{{ prod.id }}">
-                                <img src="{{ prod.image }}" alt="" width="200" height="200">
-                                <div class="menu__item-name">
-                                    {{ prod.name }}
-                                </div>
-                                <div class="menu__item-price">
-                                    {% if prod.price %}
-                                      {{ prod.price }} руб.
-                                    {% elif prod.start_price %}
-                                      от {{ prod.start_price }} руб.
+                                    {% if prod.modificators_without_price %}
+                                        <div class="checkbox-group--without-price">
+                                              <input type="text" hidden name="diam-value" class="variants-value-hidden-js">
+                                              <div class="menu__item-dropdown">
+                                                    <select name="" class="dropdown-select menu__item-select-name--variants-without-price" >
+                                                     <option value="">Соус</option>
+                                                      {% for mod in prod.modificators_without_price %}
+                                                         <option value="{{ mod.id }}"  data-id="{{ mod.id }}">{{ mod.name }}</option>
+                                                      {% endfor %}
+                                                    </select>
+                                                </div>
+                                        </div>
                                     {% endif %}
-                                </div>
-                                <div class="menu__item-description">
-                                    {{ prod.description }}
-                                </div>
-                                {% if prod.modificators %}
-                                    <div class="checkbox-group">
-                                        <form class="menu__item-select menu__item-select custom-checkbox-group">
-                                          <input type="text" hidden name="diam-value" class="variants-value-hidden-js">
-                                          {% for mod in prod.modificators %}
-                                              <label class="menu__item-select-name menu__item-select-name--variants radio">
-                                                <input type="radio" name="variant" required checked data-price="{{ mod.price }}" data-id="{{ mod.id }}"><span class="radio__text">{{ mod.name }}<br></span>
-                                              </label>
-                                          {% endfor %}
-                                        </form>
+                                    <div class="menu__item-price">
+                                        {% if prod.price %}
+                                          {{ prod.price }} руб.
+                                        {% elif prod.start_price %}
+                                          от {{ prod.start_price }} руб.
+                                        {% endif %}
                                     </div>
-                                {% endif %}
-                                {% if prod.modificators_without_price %}
-                                    <div class="checkbox-group--without-price">
-                                          <input type="text" hidden name="diam-value" class="variants-value-hidden-js">
-                                          <div class="menu__item-dropdown">
-                                                <select name="" class="dropdown-select menu__item-select-name--variants-without-price" >
-                                                 <option value="">Соус</option>
-                                                  {% for mod in prod.modificators_without_price %}
-{#                                                      <label class="menu__item-select-name menu__item-select-name--variants-without-price radio">#}
-{#                                                        <input type="radio" required name="variants-without-price" checked value="{{ mod.name }}" data-id="{{ mod.id }}">#}
-{#                                                          <span class="radio__text">{{ mod.name }}</span>#}
-{#                                                      </label>#}
-                                                     <option value="{{ mod.id }}"  data-id="{{ mod.id }}">{{ mod.name }}</option>
-                                                  {% endfor %}
-                                                </select>
-                                            </div>
-                                    </div>
-                                {% endif %}
-                                <button class="menu__btn-add-to-cart" data-price="{{ item.price }}" data-id="{{ item.id }}">В корзину</button>
-                                <div class="menu__item-popup-close"></div>
+                                  <button class="menu__btn-add-to-cart" data-price="{{ item.price }}" data-id="{{ item.id }}">В корзину</button>
+                                </div>
                             </div>
-
+                          {% endfor %}
                         </div>
-                        <div class="menu__item" data-id="{{ prod.id }}">
-                          <div class="menu__item-image">
-                            <img src="{{ prod.image }}" alt="" width="200" height="200">
-                          </div>
-                          <div class="menu__item-name">
-                            {{ prod.name }}
-                          </div>
-                          <div class="menu__item-description">
-                            {{ prod.description }}
-                          </div>
-                            <div class="menu__item-footer">
-                                {% if prod.modificators %}
-                                    <div class="checkbox-group">
-                                        <form class="menu__item-select menu__item-select custom-checkbox-group">
-                                          <input type="text" hidden name="diam-value" class="variants-value-hidden-js">
-                                          {% for mod in prod.modificators %}
-                                              <label class="menu__item-select-name menu__item-select-name--variants radio">
-                                                <input type="radio" name="variant" required checked data-price="{{ mod.price }}" data-id="{{ mod.id }}"><span class="radio__text">{{ mod.name }}<br></span>
-                                              </label>
-                                          {% endfor %}
-                                        </form>
-                                    </div>
-                                {% endif %}
-                                {% if prod.modificators_without_price %}
-                                    <div class="checkbox-group--without-price">
-                                          <input type="text" hidden name="diam-value" class="variants-value-hidden-js">
-                                          <div class="menu__item-dropdown">
-                                                <select name="" class="dropdown-select menu__item-select-name--variants-without-price" >
-                                                 <option value="">Соус</option>
-                                                  {% for mod in prod.modificators_without_price %}
-{#                                                      <label class="menu__item-select-name menu__item-select-name--variants-without-price radio">#}
-{#                                                        <input type="radio" required name="variants-without-price" checked value="{{ mod.name }}" data-id="{{ mod.id }}">#}
-{#                                                          <span class="radio__text">{{ mod.name }}</span>#}
-{#                                                      </label>#}
-                                                     <option value="{{ mod.id }}"  data-id="{{ mod.id }}">{{ mod.name }}</option>
-                                                  {% endfor %}
-                                                </select>
-                                            </div>
-                                    </div>
-                                {% endif %}
-                                <div class="menu__item-price">
-                                    {% if prod.price %}
-                                      {{ prod.price }} руб.
-                                    {% elif prod.start_price %}
-                                      от {{ prod.start_price }} руб.
-                                    {% endif %}
-                                </div>
-                              <button class="menu__btn-add-to-cart" data-price="{{ item.price }}" data-id="{{ item.id }}">В корзину</button>
-                            </div>
-                        </div>
-                      {% endfor %}
+                      {% endif %}
                     </div>
                   {% endif %}
-                </div>
+                  {% endfor %}
               {% endif %}
-              {% endfor %}
-          {% endif %}
 
 
-        </div>
-      </section>
+            </div>
+          </section>
 
 
-      <section class="footer">
-        <div class="contacts">
-          <a class="contacts__call" href="tel:{{ site_data.contact_phone_full }}">{{ site_data.contact_phone_viewed }}</a>
-        </div>
-        <p>Наш адрес: {{ site_data.self_address }}</p>
-        <!--                    <p>Скидка на самовывоз - 20%</p>-->
-        <p>{{ site_data.text_about_delivery }}</p>
-        <p><img src="https://pizza-rocket.ru/wp-content/themes/slon/image/logo-loader.png" alt=""></p>
-      </section>
-         <div class="alert-wt">
-             <div class="alert-wt__backgound" >
-                 <p class="alert-wt__text">Доставляем c <span class="js-work-start-time">{{ site_data.work_start_time }}</span> до <span class="js-work-end-time">{{ site_data.end_start_time }}</span>. <br>
-                    Можете оформить заказ, и мы с вами свяжемся в рабочее время
-                 </p>
-                 <div class="alert-wt__confirm">Понятно</div>
+          <section class="footer">
+            <div class="contacts">
+              <a class="contacts__call" href="tel:{{ site_data.contact_phone_full }}">{{ site_data.contact_phone_viewed }}</a>
+            </div>
+            <p>Наш адрес: {{ site_data.self_address }}</p>
+            <!--                    <p>Скидка на самовывоз - 20%</p>-->
+<!--            <p>{{ site_data.text_about_delivery }}</p>-->
+              
+            <p>Доставка - 200 руб.</p>
+            <p><img src="{% static 'images/logo-loader.png' %}" alt=""></p>
+          </section>
+             <div class="alert-wt">
+                 <div class="alert-wt__backgound" >
+                     <p class="alert-wt__text">Доставляем c <span class="js-work-start-time">{{ site_data.work_start_time }}</span> до <span class="js-work-end-time">{{ site_data.end_start_time }}</span>. <br>
+                        Можете оформить заказ, и мы с вами свяжемся в рабочее время
+                     </p>
+                     <div class="alert-wt__confirm">Понятно</div>
+                 </div>
              </div>
-         </div>
 
-    </main>
+        </main>
+    {% else %}
+        <div class="main-alert">
+            <div class="main-alert__text">{{ site_data.not_available_site_text|safe }}</div>
+        </div>
+    {% endif %}
   </body>
 </html>

@@ -6,7 +6,6 @@ charset-normalizer==2.0.12
 debugpy==1.5.1
 decorator==5.1.0
 dataclasses
-Django==3.2.10
 entrypoints==0.3
 idna==3.3
 ipykernel==5.5.6
